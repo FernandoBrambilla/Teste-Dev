@@ -7,28 +7,16 @@ package atividade.gerenciadorlink;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import static java.rmi.server.LogStream.log;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.crypto.AEADBadTagException;
-
-
 import javax.swing.JOptionPane;
-
-
 import javax.swing.table.DefaultTableModel;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.jsoup.select.Evaluator;
 
 
-/**
- *
- * @author COPEL
- */
 public class telaPrincipal extends javax.swing.JFrame {
   
     
@@ -349,38 +337,40 @@ public class telaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAbrirMouseClicked
 
     private void btnPesquisarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnPesquisarMouseClicked
-        Document doc=null;
-       
-       
-        
-        
-        try {
          int linhaSelecionada=tabelaResult.getSelectedRow();
-        
-        String linkSelecionado=tabelaResult.getValueAt(linhaSelecionada, 1).toString();
-        
-            
-            
-                doc = Jsoup.connect(linkSelecionado).get();
+        if(linhaSelecionada<0){
+            JOptionPane.showMessageDialog(null,"Nenhum link foi selecionado!");
+        }
+        else{
+        Document doc=null;
+      
+              
+        try {
                 
-        Elements links = doc.getElementsContainingOwnText(txtAssunto.getText());
+        
+            doc = Jsoup.connect(tabelaResult.getValueAt(linhaSelecionada,1).toString()).get();
+                
+        Elements links = doc.getElementsContainingText(txtAssunto.getText());
+        
+        
         for( Element link:links){
-            for(int i=1;i>=100;i++){
+            
+            for(int i=0;i<=links.size()&&i==linhaSelecionada;i++){
                 DefaultTableModel model = (DefaultTableModel) tabelaResult2.getModel();
                 model.addRow(new Object[]{});
-                tabelaResult2.setValueAt(i, i, 0);
+                tabelaResult2.setValueAt(i+1, i, 0);
                 tabelaResult2.setValueAt(links.text(), i,1);
                 tabelaResult2.setValueAt(links.attr("abs:href"),i,2);       
                 
             } 
-           
-        } 
+        }   
+        
             
       } catch (IOException ex) {
             Logger.getLogger(telaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
         }
             
-                  
+        }         
   
     }//GEN-LAST:event_btnPesquisarMouseClicked
 
