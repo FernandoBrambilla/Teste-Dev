@@ -9,7 +9,7 @@ package atividade.gerenciadorlink;
  * @author COPEL
  */
 public class link {
-    static int id;
+    static int id=0;
 
     public static int getId() {
         return id;
@@ -20,10 +20,6 @@ public class link {
     }
 
     
-
-  public void gerarId(){
-      id=id+1;
-  }
-    
+   
     
 }
